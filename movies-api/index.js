@@ -5,6 +5,9 @@ import genresRouter from './api/genres';
 import usersRouter from './api/users';
 import './db';
 import './seedData'
+import session from 'express-session';
+import authenticate from './authenticate';
+
 
 dotenv.config();
 
@@ -29,3 +32,14 @@ app.use(errHandler);
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
 });
+
+app.use(session({
+  secret: 'ilikecake',
+  resave: true,
+  saveUninitialized: true
+}));
+
+//... code as before
+
+//update /api/Movie route
+app.use('/api/movies', authenticate, moviesRouter);
